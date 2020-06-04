@@ -28,4 +28,10 @@ func main() {
 	fmt.Println(argsWithoutProg)
 	fmt.Println(arg)
 	*/
+
+	search()
+}
+
+func search()  {
+	fmt.Println("Search")
 }
