@@ -25,14 +25,18 @@ func main() {
 	if *sitePtr != "" {
 		//search(*sitePtr)
 		fmt.Println("site:", *sitePtr)
-		search("https://www.google.com/search?q=site%3A.ky+inurl%3Aphp")
+		if *inurlPtr != "" {
+			fmt.Println("inurl:", *inurlPtr)
+			// search("https://www.google.com/search?q=site%3A.ky+inurl%3Aphp")
+			query := "https://www.google.com/search?q=site%3A" + *sitePtr + "+inurl%3A" + *inurlPtr
+			search(query)
+		} else {
+			flag.PrintDefaults()
+			os.Exit(1)
+		}
 	} else {
 		flag.PrintDefaults()
 		os.Exit(1)
-	}
-
-	if *inurlPtr != "" {
-		fmt.Println("inurl:", *inurlPtr)
 	}
 
 	if *wildcardPtr {
@@ -62,7 +66,8 @@ func search(url string)  {
 		colly.UserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"),
 		)
 	c.OnHTML("#search .r > a", func(element *colly.HTMLElement) {
-		fmt.Printf("title:%s link:%s\n", element.Text, element.Attr("href"))
+		fmt.Println(element)
+		fmt.Printf("title:%s \n link:%s \r", element.Text, element.Attr("href"))
 	})
 
 	c.OnRequest(func(request *colly.Request) {
